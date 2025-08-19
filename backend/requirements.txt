@@ -1,2 +1,21 @@
+# Web Server
 fastapi
-uvicorn
+uvicorn[standard]
+python-multipart
+
+# Database
+sqlalchemy
+psycopg2-binary
+alembic
+
+# Async Tasks
+celery
+redis
+
+# Utilities
+pydantic
+pydantic-settings
+requests
+# Add document/scraping libraries here as needed, e.g.:
+# beautifulsoup4
+# pypdf2

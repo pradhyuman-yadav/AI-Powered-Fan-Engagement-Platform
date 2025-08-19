@@ -5,6 +5,8 @@ import { Badge } from './ui/badge';
 import { ScrollArea } from './ui/scroll-area';
 import { Send, Mic, X, Bot, User, Sparkles } from 'lucide-react';
 
+const API_BASE_URL = "http://127.0.0.1:8000";
+
 interface AIChatInterfaceProps {
   authorName: string;
   onClose: () => void;
@@ -18,16 +20,10 @@ interface ChatMessage {
 }
 
 export function AIChatInterface({ authorName, onClose }: AIChatInterfaceProps) {
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: '1',
-      type: 'ai',
-      content: `Hello! I'm an AI trained on ${authorName}'s published works and interviews. I can discuss their characters, themes, writing process, and answer questions about their stories. What would you like to know?`,
-      timestamp: new Date()
-    }
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationId, setConversationId] = useState<number | null>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const firstName = authorName.split(' ')[0];
@@ -42,10 +38,37 @@ export function AIChatInterface({ authorName, onClose }: AIChatInterfaceProps) {
   ];
 
   useEffect(() => {
+    const startConversation = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/chat/start`, {
+          method: 'POST',
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to start conversation');
+        }
+        const data = await response.json();
+        setConversationId(data.conversation_id);
+        // Set the initial AI greeting
+        setMessages([
+          {
+            id: '1',
+            type: 'ai',
+            content: `Hello! I'm an AI trained on ${authorName}'s published works and interviews. I can discuss their characters, themes, writing process, and answer questions about their stories. What would you like to know?`,
+            timestamp: new Date()
+          }
+        ]);
+      } catch (error) {
+        console.error("Error starting conversation:", error);
+        // Handle error, e.g., show an error message to the user
+      }
+    };
+    startConversation();
+
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
-  }, [messages]);
+  }, [authorName]);
 
   const handleSendMessage = async () => {
     if (!inputMessage.trim()) return;
@@ -58,20 +81,60 @@ export function AIChatInterface({ authorName, onClose }: AIChatInterfaceProps) {
     };
 
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = inputMessage;
     setInputMessage('');
     setIsTyping(true);
 
-    // Simulate AI response
-    setTimeout(() => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/chat/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          conversation_id: conversationId,
+          user_query: currentInput,
+          influencer_name: authorName,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get AI response');
+      }
+
+      const data = await response.json();
+
       const aiResponse: ChatMessage = {
         id: (Date.now() + 1).toString(),
         type: 'ai',
-        content: sampleResponses[Math.floor(Math.random() * sampleResponses.length)],
+        content: data.ai_response,
         timestamp: new Date()
       };
       setMessages(prev => [...prev, aiResponse]);
+    } catch (error) {
+      console.error("Error sending message:", error);
+      const errorResponse: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        type: 'ai',
+        content: "I'm sorry, I encountered an error. Please try again.",
+        timestamp: new Date()
+      };
+      setMessages(prev => [...prev, errorResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
+
+    // Simulate AI response
+    // setTimeout(() => {
+    //   const aiResponse: ChatMessage = {
+    //     id: (Date.now() + 1).toString(),
+    //     type: 'ai',
+    //     content: sampleResponses[Math.floor(Math.random() * sampleResponses.length)],
+    //     timestamp: new Date()
+    //   };
+    //   setMessages(prev => [...prev, aiResponse]);
+    //   setIsTyping(false);
+    // }, 1500);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {

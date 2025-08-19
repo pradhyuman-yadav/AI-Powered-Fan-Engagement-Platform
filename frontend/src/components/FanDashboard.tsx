@@ -19,15 +19,15 @@ export function FanDashboard({ onNavigate, onSelectAuthor }: FanDashboardProps) 
   const followingAuthors = [
     {
       id: 1,
-      name: "Elena Rodriguez",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b1e8d011?w=150&h=150&fit=crop&crop=face",
+      name: "William Shakespeare",
+      avatar: "https://tse2.mm.bing.net/th/id/OIP.OKj1u-zviWGstfIdy-XRnAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
       lastActive: "2 hours ago",
       newContent: 3
     },
     {
       id: 2,
-      name: "Marcus Chen",
-      avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face",
+      name: "Shailu Tipparaju",
+      avatar: "https://tse4.mm.bing.net/th/id/OIP.d_85mkDT0cZWgCxPdQlvIwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
       lastActive: "1 day ago",
       newContent: 1
     },
@@ -43,11 +43,11 @@ export function FanDashboard({ onNavigate, onSelectAuthor }: FanDashboardProps) 
   const feedItems = [
     {
       id: 1,
-      author: "Elena Rodriguez",
-      authorAvatar: "https://images.unsplash.com/photo-1494790108755-2616b1e8d011?w=40&h=40&fit=crop&crop=face",
+      author: "Shailu Tipparaju",
+      authorAvatar: "https://tse4.mm.bing.net/th/id/OIP.d_85mkDT0cZWgCxPdQlvIwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
       type: "story",
-      title: "New Chapter: The Dragon's Awakening",
-      description: "The moment we've all been waiting for - Aeron finally discovers his true heritage...",
+      title: "shailosophy.life",
+      description: "When indifference is shaped by peace rather than scarred by bitterness, it frees you from the invisible prison of expectations towards true emotional freedom.",
       timestamp: "2 hours ago",
       likes: 234,
       comments: 45,
@@ -56,8 +56,8 @@ export function FanDashboard({ onNavigate, onSelectAuthor }: FanDashboardProps) 
     },
     {
       id: 2,
-      author: "Marcus Chen",
-      authorAvatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
+      author: "William Shakespeare",
+      authorAvatar: "https://tse2.mm.bing.net/th/id/OIP.OKj1u-zviWGstfIdy-XRnAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
       type: "update",
       title: "Writing Update: AI Ethics in Fiction",
       description: "Exploring how we can responsibly portray artificial intelligence in literature...",
