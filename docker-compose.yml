@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: fan-engagement-backend
+    # For development, mount the source code and enable hot-reloading.
+    # Uvicorn's --reload flag will watch for file changes.
+    volumes:
+      - ./backend:/app
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    # If you use a .env file for the backend, uncomment below
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: fan-engagement-frontend
+    ports:
+      - "3006:80" # Access the frontend via http://localhost:3006
+    depends_on:
+      - backend
+
+networks:
+  default:
+    name: fan-engagement-network
