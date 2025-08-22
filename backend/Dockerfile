@@ -1,24 +1,20 @@
-# Use an official Python runtime as a parent image
+# Use official Python image
 FROM python:3.11-slim
 
-# Set environment variables for Python
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-
-# Set the working directory in the container
+# Set working directory
 WORKDIR /app
 
-# Copy the requirements file and install dependencies
-# This leverages Docker's layer caching
-COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+# Copy requirements file
+COPY requirements.txt ./
 
-# Copy the rest of the application's code
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy app files
 COPY . .
 
-# Expose port 8000 for the application
+# Expose port 8000
 EXPOSE 8000
 
-# The default command to run the app. This will be overridden in docker-compose for development.
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Run the FastAPI app with Uvicorn
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

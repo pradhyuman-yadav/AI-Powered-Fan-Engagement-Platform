@@ -21,3 +21,6 @@ Thumbs.db
 **/*.so
 
 **/*.pickle
+
+**/*.sqlite3
+**/*.db
