@@ -13,7 +13,7 @@ RUN npm install
 COPY . .
 
 # Build the application for production
-RUN npm run build
+RUN npm run dev
 
 # Stage 2: Serve the static files with Nginx
 FROM nginx:stable-alpine
