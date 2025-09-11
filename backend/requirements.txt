@@ -19,3 +19,5 @@ requests
 # Add document/scraping libraries here as needed, e.g.:
 # beautifulsoup4
 # pypdf2
+
+scrapy
